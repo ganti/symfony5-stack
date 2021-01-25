@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\Log;
@@ -10,15 +12,14 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class LogService
 {
-    protected $log;
-    private $security;   
-    protected $em;
-    protected $requestStack; 
-    protected $manager;
+    protected Log $log;
+    private Security $security;
+    protected RequestStack $requestStack; 
+    protected EntityManagerInterface $manager;
 
     /**
      * LogService constructor.
-     * @param EntityManagerInterface $em
+     * @param EntityManagerInterface $manager
      * @param Security $security
      * @param RequestStack $requestStack
      */

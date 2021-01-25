@@ -18,5 +18,4 @@ class LogRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Log::class);
     }
-
 }

@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\LogRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\TimestampableCreatedTrait;
 use App\Entity\Traits\TimestampableUpdatedTrait;
@@ -18,13 +17,11 @@ class Log
     
     public const ALLOWED_LEVELS = ['ERROR', 'WARNING', 'INFO', 'NOTICE', 'DEBUG', 'NO_LEVEL'];
 
-    public function __construct(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken)
+    public function __construct()
     {
         $this->subcontext = '';
-        $this->user = $user;
-        $this->initialize($expiresAt, $selector, $hashedToken);
     }
-    
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -57,13 +54,10 @@ class Log
      */
     private $success;
 
-
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="logs")
      */
-    private $user;
-
+    private $user_id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -84,7 +78,6 @@ class Log
      * @ORM\Column(type="text", nullable=true)
      */
     private $requestPath;
-
     
     public function getId(): ?int
     {
@@ -173,12 +166,12 @@ class Log
 
     public function getUserId(): ?User
     {
-        return $this->userId;
+        return $this->user_id;
     }
 
     public function setUserId(?User $user_id): self
     {
-        $this->userId = $user_id;
+        $this->user_id = $user_id;
 
         return $this;
     }

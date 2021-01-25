@@ -60,7 +60,7 @@ class SecurityController extends AbstractController
             'sign_in_label' => 'Log in',
 
             // the 'name' HTML attribute of the <input> used for the username field (default: '_username')
-            'username_parameter' => 'email',
+            'username_parameter' => 'username',
 
             // the 'name' HTML attribute of the <input> used for the password field (default: '_password')
             'password_parameter' => 'password',
