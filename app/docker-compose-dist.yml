@@ -12,11 +12,6 @@ services:
     volumes:
       - ./docker/mysql/conf.d:/etc/mysql/conf.d
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8888:8081
 
 #  nginx:
 #    build: docker/nginx

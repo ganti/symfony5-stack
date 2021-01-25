@@ -1,16 +1,19 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class UserCrudController extends AbstractCrudController
@@ -23,34 +26,44 @@ class UserCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
+            ->setEntityLabelInSingular('User ')
+            ->setEntityLabelInPlural('Users')
+            ->setPageTitle('index', '%entity_label_plural%')
+            ->setSearchFields(['username', 'email'])
             ->setEntityPermission('ROLE_ADMIN')
-            ;
+        ;
     }
 
     public function configureFields(string $pageName): iterable
     {
-        return [
-            IdField::new('id')->hideOnForm(),
-            TextField::new('email'),
-            TextField::new('plainPassword')->setRequired(true)->onlyOnForms()->setFormType(PasswordType::class),
-            DateTimeField::new('createdAt')->hideOnForm(),
-            DateTimeField::new('updatedAt')->hideOnForm(),
-        ];
-    }
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param User $entityInstance
-     */
-    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        if ($entityManager->getRepository(User::class)->findOneBy([
-            'email' => $entityInstance->getEmail(),
-        ])) {
-            $this->container->get('session')->getFlashBag()->add('error', 'Email exists');
+        if (Crud::PAGE_INDEX === $pageName) {
+            yield IntegerField::new('id');
+            yield TextField::new('username');
+            yield TextField::new('email');
+            yield BooleanField::new('isActive', 'active')->setFormTypeOption('disabled', 'disabled');
+            yield DateTimeField::new('createdAt');
         } else {
-            $entityManager->persist($entityInstance);
-            $entityManager->flush();
+            yield FormField::addPanel('Account Information');
+            yield TextField::new('username');
+            yield TextField::new('email');
+            yield TextField::new('plainPassword')->setRequired(False)->onlyOnForms()->setFormType(PasswordType::class);
+
+            if ($this->isGranted('ROLE_ADMIN')) {
+                yield FormField::addPanel('Admin Settings');
+                yield ChoiceField::new('roles', 'Roles')
+                                            ->allowMultipleChoices()
+                                            ->autocomplete()
+                                            ->setChoices(
+                                                [   'User' => 'ROLE_USER',
+                                                    'Admin' => 'ROLE_ADMIN',
+                                                    'SuperAdmin' => 'ROLE_SUPER_ADMIN'
+                                                ]
+                                            );
+                yield BooleanField::new('isActive');
+                yield DateTimeField::new('deletedAt')->setFormat('full');
+                yield DateTimeField::new('updatedAt')->setFormTypeOption('disabled', 'disabled');
+                yield DateTimeField::new('createdAt')->setFormTypeOption('disabled', 'disabled');
+            }
         }
     }
 }

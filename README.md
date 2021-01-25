@@ -14,7 +14,7 @@ mailer (register, reset)
 
 ## Installation
 Dependencies:
-php7.4, composer, symfony-cli
+docker, php7.4, composer, symfony-cli
 
 Start docker with (comment out nginx, php, frontend):
 ```
@@ -23,14 +23,15 @@ docker-compose up -d
 composer install
 ```
 
-Adjust env settings - uncomment below (default db name is `default`):
+Adjust env settings
 ```
 cp .env.dev .env.dev.local
-#DATABASE_URL=mysql://root:P@ssw0rd@127.0.0.1:3307/default
+DATABASE_URL=mysql://root:P@ssw0rd@127.0.0.1:3307/default?serverVersion=5.7
 ``` 
 Prepare dev database with:
 ```
-echo 'DATABASE_URL=mysql://root:P@ssw0rd@127.0.0.1:3307/default' >> .env.local
+echo 'DATABASE_URL=mysql://root:P@ssw0rd@127.0.0.1:3307/default?serverVersion=5.7' >> .env.local
+echo 'MAILER_DSN=smtp://7f8d95d12653df:f1f1a64387c12f@smtp.mailtrap.io:2525?encryption=tls&auth_mode=login'  >> .env.local
 bash reset_dev_db.sh
 ```
 
@@ -46,8 +47,9 @@ Open your browser:
 
 Login with one of created users:
 ```
-root@root.dev / root (admin user)
-user@user.dev / user (regular user)
+superadmin@foo.bar / admin (superadmin user)
+admin@foo.bar / admin (admin user)
+user@foo.bar / admin (regular user)
 ```
 
 Send email tests with:
@@ -87,17 +89,3 @@ Run PHP CS Fixer with:
 vendor/bin/php-cs-fixer fix -v
 ```
 You will find rules in: `.php_cs.dist`
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to follow code style and update tests as appropriate.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
-
-
-
-
-
-
