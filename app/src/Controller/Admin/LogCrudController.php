@@ -78,7 +78,7 @@ class LogCrudController extends AbstractCrudController
                 yield TextField::new('requestMethod', 'Request Method');
                 yield TextField::new('requestPath', 'Request Path');
                 yield TextField::new('clientIP', 'Client IP');
-                yield AssociationField::new('user', 'User');
+                yield AssociationField::new('user_id', 'User');
                 yield TextField::new('clientLocale', 'Locale');
 
         }
@@ -91,7 +91,7 @@ class LogCrudController extends AbstractCrudController
             ->add('level', 'Level')
             ->add('message', 'Message')
             //->add(TextFilter::new('fullcontext')->mapped(false))
-            ->add('user', 'User')
+            ->add('user_id', 'User')
             ->add('createdAt', 'created at')
         ;
     }

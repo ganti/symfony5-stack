@@ -1,0 +1,39 @@
+login:
+    reset_button: Reset
+    reset_text: Enter your email address and we we will send you a link to reset your password.
+    reset_link: Reset password
+register:
+    subject: Welcome to Sf-Easy
+    welcome: Welcome
+    text: Your have registered a Sf-Easy account
+    link: Use this link to open Sf-Easy
+    button: Go to admin
+password_reset: 
+    request:
+        page_title: Password Reset
+        header_text: Enter your email address and we we will send you a link to reset your password.
+        email_input_placeholder: john@doe.com
+        email_input_error: Please enter your email
+        submit_button: Reset password
+    checkemail:
+        mail_sent2: >-
+                    {hours, plural,
+                        =1    {hour.}
+                        other {hours.}
+                    }
+        try_again_text: If you don't receive an email please check your spam folder or
+        try_again_link: try again
+    reset:
+        header_text: Set new password
+        submit_button: Reset
+    email: 
+        body_title: Reset password 
+        subject: Your password reset request 
+        body_text: To reset your password, please click button below
+        button_text: Reset
+        deactivated_prefix: This link will expire in
+        deactivated_hours: >-
+                    {hours, plural,
+                        =1    {hour.}
+                        other {hours.}
+                    }

@@ -53,7 +53,7 @@ class ResetPasswordController extends AbstractController
             );
         }
 
-        return $this->render('reset_password/request.html.twig', [
+        return $this->render('@EasyAdmin/reset_password/request.html.twig', [
             'requestForm' => $form->createView(),
             'page_title' => 'ACME reset password',
         ]);
@@ -71,7 +71,7 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_forgot_password_request');
         }
 
-        return $this->render('reset_password/check_email.html.twig', [
+        return $this->render('@EasyAdmin/reset_password/check_email.html.twig', [
             'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
             'page_title' => 'ACME reset password',
         ]);
@@ -132,7 +132,7 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('reset_password/reset.html.twig', [
+        return $this->render('@EasyAdmin/reset_password/reset.html.twig', [
             'resetForm' => $form->createView(),
         ]);
     }
@@ -170,7 +170,7 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_check_email');
         }
 
-        $mailSender->sendTwig($user->getEmail(), 'emails/reset.html.twig', $translator->trans('email.reset.subject'),
+        $mailSender->sendTwig($user->getEmail(), '@EasyAdmin/emails/reset.html.twig', $translator->trans('email.reset.subject'),
             [
                 'resetToken' => $resetToken,
                 'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
