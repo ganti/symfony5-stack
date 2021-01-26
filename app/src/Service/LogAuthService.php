@@ -9,13 +9,21 @@ class LogAuthService extends LogService
 {
     public function login($message='', $success=False) : self
     {   
+        $user = null;
         $requestUsername = $this->requestStack->getCurrentRequest()->get('username');
+        $userByUsername =  $this->manager->getRepository(User::class)
+                            ->findOneBy(['username' => $requestUsername]);
 
-        $user =  $this->manager->getRepository(User::class)
-                        ->findOneBy(['username' => $requestUsername]);
-
-        $this->log->setUserId($user);
-
+        if ($userByUsername != null) {
+            $user = $userByUsername;
+        }else{
+            $userByEmail =  $this->manager->getRepository(User::class)
+                                ->findOneBy(['email' => $requestUsername]);
+            $user = $userByEmail;
+        }
+        if ($user != null) {
+            $this->log->setUser($user);
+        }
 
         if ($success) {
             $this->debug('auth', 'login', $requestUsername.' login successful '.$message, True);
@@ -25,9 +33,9 @@ class LogAuthService extends LogService
         return $this;
     }
 
-    public function logout($message='', $success=False) : self
+    public function logout($success=False) : self
     {   
-        $this->debug('auth', 'logout', $requestUsername.' logged out ', True);
+        $this->debug('auth', 'logout', $this->log->getUser.' logged out ', True);
         return $this;
     }
 

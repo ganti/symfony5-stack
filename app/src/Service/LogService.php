@@ -30,7 +30,7 @@ class LogService
         $this->requestStack = $requestStack;
 
         $this->log = new Log();
-        $this->log->setUserId( $this->security->getUser() );
+        $this->log->setUser( $this->security->getUser() );
         $this->log->setClientIP( $this->requestStack->getCurrentRequest()->getClientIp() );
         $this->log->setClientLocale( $this->requestStack->getCurrentRequest()->getLocale() );
         $this->log->setRequestMethod( $this->requestStack->getCurrentRequest()->getMethod() );

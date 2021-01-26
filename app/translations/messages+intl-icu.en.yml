@@ -1,13 +1,19 @@
 login:
-    reset_button: Reset
-    reset_text: Enter your email address and we we will send you a link to reset your password.
+    reset_text: Please enter credentials to login
+    username_label: Your email
+    username_placeholder: john@doe.com
+    password_label: Your password
+    password_placeholder: ''
+    sign_in_label: Log in
     reset_link: Reset password
+
 register:
     subject: Welcome to Sf-Easy
     welcome: Welcome
     text: Your have registered a Sf-Easy account
     link: Use this link to open Sf-Easy
     button: Go to admin
+    
 password_reset: 
     request:
         page_title: Password Reset

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Service\LogAuthService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,6 +12,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    private LogAuthService $log;
+
+    public function __construct(LogAuthService $log)
+    {
+        $this->log = $log;
+    }
     /**
      * @Route("/login", name="app_login")
      */
@@ -25,7 +32,7 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('@EasyAdmin/page/login.html.twig', [
+        return $this->render('@EasyAdmin/login/login.html.twig', [
             // parameters usually defined in Symfony login forms
             'error' => $error,
             'last_username' => $lastUsername,
@@ -50,15 +57,6 @@ class SecurityController extends AbstractController
             // the URL users are redirected to after the login (default: '/admin')
             'target_path' => $this->generateUrl('admin_dashboard'),
 
-            // the label displayed for the username form field (the |trans filter is applied to it)
-            'username_label' => 'Your email',
-
-            // the label displayed for the password form field (the |trans filter is applied to it)
-            'password_label' => 'Your password',
-
-            // the label displayed for the Sign In form button (the |trans filter is applied to it)
-            'sign_in_label' => 'Log in',
-
             // the 'name' HTML attribute of the <input> used for the username field (default: '_username')
             'username_parameter' => 'username',
 
@@ -72,6 +70,8 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
+        die("xxx"); 
+        $this->log->logout(True);
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }
