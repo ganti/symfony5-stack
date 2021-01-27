@@ -54,8 +54,7 @@ class ResetPasswordController extends AbstractController
         }
 
         return $this->render('@EasyAdmin/reset_password/request.html.twig', [
-            'requestForm' => $form->createView(),
-            'page_title' => 'ACME reset password',
+            'requestForm' => $form->createView()
         ]);
     }
 

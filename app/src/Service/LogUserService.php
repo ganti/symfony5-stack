@@ -26,16 +26,22 @@ class LogUserService extends LogService
         }
 
         if ($success) {
-            $this->debug('user', 'auth:login', $requestUsername.' login successful '.$message, True);
+            $this->debug('user', 'login', $requestUsername.' login successful '.$message, True);
         }else{
-            $this->info('user', 'auth:login', $requestUsername.' failed logging in '.$message, False);
+            $this->info('user', 'login', $requestUsername.' failed logging in '.$message, False);
         }
         return $this;
     }
 
     public function logout($success=False) : self
     {   
-        $this->debug('user', 'auth:logout', $this->log->getUser.' logged out ', True);
+        $this->debug('user', 'logout', $this->log->getUser.' logged out ', True);
+        return $this;
+    }
+
+    public function passwordResetMail($success=False) : self
+    {   
+        $this->debug('user', 'sent password reset mail', $this->log->getUser.' logged out ', True);
         return $this;
     }
 
