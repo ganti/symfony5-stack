@@ -38,7 +38,8 @@ class UserListener
 
     private function handlePassword(User $user): void
     {
-        if ($user->getPlainPassword()) {
+ 
+        if ($user->getPlainPassword() !== NULL and empty($user->getPlainPassword()) == False) {
             $user->setPassword(
                 $this->userPasswordEncoder->encodePassword($user, $user->getPlainPassword())
             );

@@ -43,6 +43,6 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $entity->cleanPassword();
+        $entity->eraseCredentials();
     }
 }
