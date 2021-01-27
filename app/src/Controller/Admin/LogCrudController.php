@@ -63,6 +63,7 @@ class LogCrudController extends AbstractCrudController
             yield TextField::new('level');
             yield TextField::new('fullcontext', 'Context');
             yield TextareaField::new('message');
+            yield TextField::new('user');
             yield DateTimeField::new('createdAt');
 
         }else if (Crud::PAGE_DETAIL=== $pageName) { 
