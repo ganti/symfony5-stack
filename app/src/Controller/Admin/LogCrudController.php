@@ -63,7 +63,7 @@ class LogCrudController extends AbstractCrudController
             yield TextField::new('level');
             yield TextField::new('fullcontext', 'Context');
             yield TextareaField::new('message');
-            yield DateTimeField::new('createdAt')->setFormat('short', 'short');
+            yield DateTimeField::new('createdAt');
 
         }else if (Crud::PAGE_DETAIL=== $pageName) { 
 
@@ -72,7 +72,7 @@ class LogCrudController extends AbstractCrudController
                 yield TextField::new('level');
                 yield TextField::new('fullcontext', 'Context');
                 yield TextareaField::new('message');
-                yield DateTimeField::new('createdAt')->setFormat('short','short')->setFormTypeOption('disabled','disabled');
+                yield DateTimeField::new('createdAt')->setFormTypeOption('disabled','disabled');
             
             yield FormField::addPanel('Request Information');
                 yield TextField::new('requestMethod', 'Request Method');

@@ -7,6 +7,9 @@ use Symfony\Component\Security\Core\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -82,13 +85,18 @@ class UserCrudController extends AbstractCrudController
             }
         } else {
 
-            //User Profile
             if ($this->getIsLoggedInUserEditingUserCrud() OR $this->isGranted('ROLE_ADMIN')) {
-
                 yield FormField::addPanel('Account Information')->setIcon('far fa-address-card');
-                yield TextField::new('username', 'Username')->setFormTypeOption('disabled', 'disabled');
-                yield TextField::new('email', 'eMail');
-                
+
+                if ($this->isGranted('ROLE_ADMIN')) {
+                    yield TextField::new('username', 'Username');
+                    yield TextField::new('email', 'eMail');
+                }else{
+                    //User Profile
+                    yield TextField::new('username', 'Username')->setFormTypeOption('disabled', 'disabled');
+                    yield TextField::new('email', 'eMail');
+                }
+
                 yield FormField::addPanel('Change password')->setIcon('fa fa-key');
                 yield Field::new('plainPassword', 'New password')
                                             ->onlyOnForms()
@@ -113,9 +121,9 @@ class UserCrudController extends AbstractCrudController
                                                 ]
                                             );
                 yield BooleanField::new('active', 'is active');
-                yield DateTimeField::new('deletedAt')->setFormat('full');
-                yield DateTimeField::new('updatedAt')->setFormTypeOption('disabled', 'disabled');
-                yield DateTimeField::new('createdAt')->setFormTypeOption('disabled', 'disabled');
+                yield DateTimeField::new('createdAt', 'created')->setFormTypeOption('disabled', 'disabled');
+                yield DateTimeField::new('updatedAt', 'updated')->setFormTypeOption('disabled', 'disabled');
+                yield DateTimeField::new('deletedAt', 'deleted')->setFormat('full');
             }
         }
     }
@@ -123,7 +131,7 @@ class UserCrudController extends AbstractCrudController
 
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        
+
         // set new password with encoder interface
         if (method_exists($entityInstance, 'setPassword')) {
             $passwords = $this->adminContextProvider->getContext()->getRequest()->request->all()['User']['plainPassword'];
@@ -132,6 +140,8 @@ class UserCrudController extends AbstractCrudController
                 
                 if (trim($passwords['first']) == trim($passwords['second'])) {
                     $plainPassword = trim($passwords['first']);
+                }else{
+                    $this->addFlash('warning', 'Passwords dont match');
                 }
                 if (!empty($plainPassword)) {
                     $encodedPassword = $this->passwordEncoder->encodePassword($this->getUser(), $plainPassword);
@@ -145,6 +155,18 @@ class UserCrudController extends AbstractCrudController
         }
 
         parent::updateEntity($entityManager, $entityInstance);
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        
+        return $actions
+            ->disable('new')
+            ->disable('edit')
+            ->disable('delete')
+            ->add(Crud::PAGE_INDEX, Action::DETAIL) 
+            ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
+        ;
     }
 
 
