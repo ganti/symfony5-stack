@@ -12,6 +12,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
@@ -109,6 +111,9 @@ class UserCrudController extends AbstractCrudController
                                             ]);
             }
             
+            yield FormField::addPanel('Logs')->setIcon('fas fa-log');
+            //yield AssociationField::new('logs');
+
             if ($this->isGranted('ROLE_ADMIN')) {
                 yield FormField::addPanel('Admin Settings')->setIcon('fas fa-users-cog');
                 yield ChoiceField::new('roles', 'Role')
@@ -164,7 +169,6 @@ class UserCrudController extends AbstractCrudController
             ->disable('new')
             ->disable('edit')
             ->disable('delete')
-            ->add(Crud::PAGE_INDEX, Action::DETAIL) 
             ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
         ;
     }

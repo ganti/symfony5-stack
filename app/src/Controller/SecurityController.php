@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Service\LogAuthService;
+use App\Service\LogUserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,9 +12,9 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    private LogAuthService $log;
+    private LogUserService $log;
 
-    public function __construct(LogAuthService $log)
+    public function __construct(LogUserService $log)
     {
         $this->log = $log;
     }

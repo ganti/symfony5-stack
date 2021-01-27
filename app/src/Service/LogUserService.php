@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Service\LogService;
 use App\Entity\User;
 
-class LogAuthService extends LogService
+class LogUserService extends LogService
 {
     public function login($message='', $success=False) : self
     {   
