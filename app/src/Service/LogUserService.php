@@ -33,9 +33,10 @@ class LogUserService extends LogService
         return $this;
     }
 
-    public function logout($success=False) : self
+    public function logout($user, $success=False) : self
     {   
-        $this->debug('user', 'logout', $this->log->getUser.' logged out ', True);
+        $this->log->setUser( $user);
+        $this->debug('user', 'logout', $user.' logged out ', True);
         return $this;
     }
 

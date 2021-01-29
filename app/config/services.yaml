@@ -27,3 +27,5 @@ services:
     # please note that last definitions always *replace* previous ones
     App\EventListener\UserListener:
         tags: [doctrine.orm.entity_listener]
+    app.logout.listener:
+        class: App\EventListener\LogoutListener
