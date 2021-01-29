@@ -16,6 +16,7 @@ use App\Entity\Traits\ActiveTrait;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Table(name="`users`")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\EntityListeners(
  *     {
@@ -59,7 +60,7 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\OneToMany(targetEntity=Log::class, mappedBy="user_id")
+     * @ORM\OneToMany(targetEntity=Log::class, mappedBy="user")
      */
     private $logs;
 
@@ -67,7 +68,7 @@ class User implements UserInterface
      * @Assert\Length(min=8, max=128)
      */
     private ?string $plainPassword = null;
-
+    
     public function __construct()
     {
         $this->isActive = true;
@@ -169,6 +170,28 @@ class User implements UserInterface
     public function getLogs(): Collection
     {
         return $this->logs;
+    }
+
+    public function addLogs(Log $logs): self
+    {
+        if (!$this->logs->contains($logs)) {
+            $this->logs[] = $logs;
+            $logs->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLogs(Log $logs): self
+    {
+        if ($this->logs->removeElement($logs)) {
+            // set the owning side to null (unless already changed)
+            if ($logs->getUser() === $this) {
+                $logs->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
 

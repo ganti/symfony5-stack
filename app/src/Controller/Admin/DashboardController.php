@@ -3,7 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Entity\UserRole;
 use App\Entity\Log;
+
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -15,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -32,7 +35,6 @@ class DashboardController extends AbstractDashboardController
     {
         return $this->render('@EasyAdmin/dashboard/dashboard.html.twig');
         return parent::index(); // orginal
-
     }
 
     public function configureDashboard(): Dashboard
@@ -47,9 +49,9 @@ class DashboardController extends AbstractDashboardController
 
         if ($this->isGranted('ROLE_ADMIN')) {
             yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
+            yield MenuItem::linkToCrud('User Roles', 'fas fa-user-tag', UserRole::class);
             yield MenuItem::linkToCrud('Logs', 'fas fa-list', Log::class);
             yield MenuItem::section();
-
         }
     }
 
@@ -81,6 +83,10 @@ class DashboardController extends AbstractDashboardController
             ->setTimeFormat('HH:mm:ss')
         ;
     }
+
+
+    public function configureAssets(): Assets
+    {
+        return Assets::new()->addCssFile('css/admin.css');
+    }
 }
-
-

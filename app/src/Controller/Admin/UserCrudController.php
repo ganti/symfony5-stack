@@ -3,8 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Entity\UserRole;
 use Symfony\Component\Security\Core\Security;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityManager; 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -35,17 +37,19 @@ class UserCrudController extends AbstractCrudController
 
     private AdminContextProvider $adminContextProvider;
     private Security $security;
+    private EntityManagerInterface $entityManager;
 
 
     /**
      * UserCrudController constructor.
      * @param UserPasswordEncoderInterface $passwordEncoder
      */
-    public function __construct(AdminContextProvider $adminContextProvider, Security $security, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(AdminContextProvider $adminContextProvider, Security $security, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager)
     {
         $this->adminContextProvider = $adminContextProvider;
         $this->security = $security;
         $this->passwordEncoder = $passwordEncoder;
+        $this->entityManager = $entityManager;
     }
 
 
@@ -112,19 +116,15 @@ class UserCrudController extends AbstractCrudController
             }
             
             yield FormField::addPanel('Logs')->setIcon('fas fa-log');
-            //yield AssociationField::new('logs');
+            yield ArrayField::new('logs');
 
             if ($this->isGranted('ROLE_ADMIN')) {
                 yield FormField::addPanel('Admin Settings')->setIcon('fas fa-users-cog');
                 yield ChoiceField::new('roles', 'Role')
                                             ->allowMultipleChoices()
                                             ->autocomplete()
-                                            ->setChoices(
-                                                [   'User' => 'ROLE_USER',
-                                                    'Admin' => 'ROLE_ADMIN',
-                                                    'SuperAdmin' => 'ROLE_SUPER_ADMIN'
-                                                ]
-                                            );
+                                            ->setChoices( $this->getUserRolesField());
+
                 yield BooleanField::new('active', 'is active');
                 yield DateTimeField::new('createdAt', 'created')->setFormTypeOption('disabled', 'disabled');
                 yield DateTimeField::new('updatedAt', 'updated')->setFormTypeOption('disabled', 'disabled');
@@ -159,6 +159,11 @@ class UserCrudController extends AbstractCrudController
             }
         }
 
+        //UserRoles
+        $roles = $this->adminContextProvider->getContext()->getRequest()->request->all()['User']['roles'];
+        $rolesToSave = $this->entityManager->getRepository(UserRole::class)->getAllRolesToSave($roles);
+        $entityInstance->setRoles($rolesToSave);
+
         parent::updateEntity($entityManager, $entityInstance);
     }
 
@@ -171,6 +176,22 @@ class UserCrudController extends AbstractCrudController
             ->disable('delete')
             ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
         ;
+    }
+
+    private function getUserRolesField(): Array{
+        $return = [];
+        /*
+        $return = [  'User' => 'ROLE_USER',
+                     'Admin' => 'ROLE_ADMIN',
+                     'SuperAdmin' => 'ROLE_SUPER_ADMIN'
+                 ];
+        */
+
+        $roles = $this->entityManager->getRepository(UserRole::class)->findAllActive();
+        foreach ($roles as $r){
+            $return[$r->getName()] = $r->getRole(); 
+        }
+        return $return;
     }
 
 

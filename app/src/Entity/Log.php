@@ -10,6 +10,7 @@ use App\Entity\Traits\TimestampableDeletedTrait;
 
 /**
  * @ORM\Entity(repositoryClass=LogRepository::class)
+ * @ORM\Table(name="`logs`")
  */
 class Log
 {
@@ -20,6 +21,11 @@ class Log
     public function __construct()
     {
         $this->subcontext = '';
+    }
+
+    public function __toString()
+    {
+        return (string) $this->message;
     }
 
     /**
