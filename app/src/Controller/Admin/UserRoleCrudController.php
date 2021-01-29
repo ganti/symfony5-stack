@@ -57,7 +57,7 @@ class UserRoleCrudController extends AbstractCrudController
             yield TextField::new('role', 'Role');
             yield TextField::new('name', 'Name');
             yield TextField::new('description', 'Description');
-            yield ArrayField::new('parentRole', 'Parent Role');
+            yield ArrayField::new('ParentRoleRecursive', 'Parent Roles');
             yield BooleanField::new('active', 'is active')->setFormTypeOption('disabled','disabled');
             yield DateTimeField::new('createdAt');
 
@@ -71,9 +71,9 @@ class UserRoleCrudController extends AbstractCrudController
 
             yield TextField::new('name', 'Name');
             yield TextField::new('description', 'Description');
-            yield AssociationField::new('parentRole', 'Parent Roles');
+            yield AssociationField::new('parentRole', 'Parent Role');
             yield BooleanField::new('active', 'is active');
-
+            yield BooleanField::new('systemrole', 'is systemrole')->setFormTypeOption('disabled','disabled');
             yield FormField::addPanel('Timestamps')->setIcon('fa fa-clock');
             yield DateTimeField::new('createdAt', 'created')->setFormTypeOption('disabled', 'disabled');
             yield DateTimeField::new('updatedAt', 'updated')->setFormTypeOption('disabled', 'disabled');
@@ -91,4 +91,5 @@ class UserRoleCrudController extends AbstractCrudController
         ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
         ;
     }
+
 }

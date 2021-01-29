@@ -24,35 +24,6 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         
-        //Create the following Userroles
-        $roles = [  'Super Admin' => 'ROLE_SUPER_ADMIN', 
-                    'Admin' => 'ROLE_ADMIN',
-                    'User' => 'ROLE_USER'];
-        foreach ($roles as $k => $v) {
-            $role = new Userrole();
-            $role->setRole($v);
-            $role->setName($k);
-            $role->setDescription($k.' (System Role)');
-            $role->setSystemrole(True);
-            $manager->persist($role);
-        }
-
-        $role_test = new Userrole();
-        $role_test->setRole('ROLE_TEST');
-        $role_test->setName('ROLE_TEST');
-        $role_test->setDescription('Testrole');
-        $role_test->setSystemrole(False);
-        $manager->persist($role_test);
-
-        $role_test2 = new Userrole();
-        $role_test2->setRole('ROLE_TEST2');
-        $role_test2->setName('ROLE_TEST2');
-        $role_test2->setDescription('Testrole 2');
-        $role_test2->setSystemrole(False);
-        $role_test2->setParentRole($role_test);
-        $manager->persist($role_test2);
-
-        
         //Create the following users
          $items = array(
             ['user' => 'superadmin', 'pass' => 'admin', 'role' => 'ROLE_SUPER_ADMIN'],

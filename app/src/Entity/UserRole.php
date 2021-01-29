@@ -59,6 +59,7 @@ class UserRole
     {
         $this->isActive = true;
         $this->parentRole = null;
+        $this->systemrole = False;
     }
 
     public function __toString()
