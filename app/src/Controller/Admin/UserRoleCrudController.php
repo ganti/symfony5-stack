@@ -57,7 +57,7 @@ class UserRoleCrudController extends AbstractCrudController
             yield TextField::new('role', 'Role');
             yield TextField::new('name', 'Name');
             yield TextField::new('description', 'Description');
-            yield ArrayField::new('parentRole', 'Parent Roles');
+            yield ArrayField::new('parentRole', 'Parent Role');
             yield BooleanField::new('active', 'is active')->setFormTypeOption('disabled','disabled');
             yield DateTimeField::new('createdAt');
 
