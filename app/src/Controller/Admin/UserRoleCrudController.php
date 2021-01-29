@@ -40,6 +40,8 @@ class UserRoleCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInPlural('User Roles')
             ->setPageTitle('index', '%entity_label_plural%')
+            ->setPageTitle('new', 'New Role')
+
             ->setDateFormat('full')
             ->setDefaultSort(['id' => 'ASC'])
             ->setSearchFields(['role', 'description'])
@@ -56,22 +58,37 @@ class UserRoleCrudController extends AbstractCrudController
             yield TextField::new('name', 'Name');
             yield TextField::new('description', 'Description');
             yield ArrayField::new('parentRole', 'Parent Roles');
-            yield BooleanField::new('systemrole', 'is System Role')->setFormTypeOption('disabled','disabled');
             yield BooleanField::new('active', 'is active')->setFormTypeOption('disabled','disabled');
             yield DateTimeField::new('createdAt');
+
+        } else {
+            yield FormField::addPanel('Role')->setIcon('fa fa-user-tag');
+            if (Crud::PAGE_NEW === $pageName) {
+                yield TextField::new('role', 'Role');
+            } elseif (Crud::PAGE_EDIT === $pageName) {
+                yield TextField::new('role', 'Role')->setFormTypeOption('disabled', 'disabled');
+            }
+
+            yield TextField::new('name', 'Name');
+            yield TextField::new('description', 'Description');
+            yield AssociationField::new('parentRole', 'Parent Roles');
+            yield BooleanField::new('active', 'is active');
+
+            yield FormField::addPanel('Timestamps')->setIcon('fa fa-clock');
+            yield DateTimeField::new('createdAt', 'created')->setFormTypeOption('disabled', 'disabled');
+            yield DateTimeField::new('updatedAt', 'updated')->setFormTypeOption('disabled', 'disabled');
+            yield DateTimeField::new('deletedAt', 'deleted');
 
         }
         return $this;
     }
 
-    /*
-    public function configureFields(string $pageName): iterable
+    public function configureActions(Actions $actions): Actions
     {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
+        
+        return $actions
+        ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
+        ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+        ;
     }
-    */
 }

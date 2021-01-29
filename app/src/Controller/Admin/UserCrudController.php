@@ -128,7 +128,7 @@ class UserCrudController extends AbstractCrudController
                 yield BooleanField::new('active', 'is active');
                 yield DateTimeField::new('createdAt', 'created')->setFormTypeOption('disabled', 'disabled');
                 yield DateTimeField::new('updatedAt', 'updated')->setFormTypeOption('disabled', 'disabled');
-                yield DateTimeField::new('deletedAt', 'deleted')->setFormat('full');
+                yield DateTimeField::new('deletedAt', 'deleted');
             }
         }
     }
@@ -180,13 +180,6 @@ class UserCrudController extends AbstractCrudController
 
     private function getUserRolesField(): Array{
         $return = [];
-        /*
-        $return = [  'User' => 'ROLE_USER',
-                     'Admin' => 'ROLE_ADMIN',
-                     'SuperAdmin' => 'ROLE_SUPER_ADMIN'
-                 ];
-        */
-
         $roles = $this->entityManager->getRepository(UserRole::class)->findAllActive();
         foreach ($roles as $r){
             $return[$r->getName()] = $r->getRole(); 

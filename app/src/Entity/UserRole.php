@@ -14,7 +14,7 @@ use App\Entity\Traits\TimestampableUpdatedTrait;
 use App\Entity\Traits\TimestampableDeletedTrait;
 /**
  * @ORM\Entity(repositoryClass=UserRoleRepository::class)
- * @ORM\Table(name="`user_roles`")
+ * @ORM\Table(name="`user_role`")
  */
 class UserRole
 {
@@ -119,10 +119,22 @@ class UserRole
         return $this;
     }
 
+
+    public function getParentRole(): ?self
+    {
+        return $this->parentRole;
+    }
+
+    public function setParentRole(?self $parentRole): self
+    {
+        $this->parentRole = $parentRole;
+        return $this;
+    }
+
     /*
      * Recursive fetch all Parent Roles
      */
-    public function getParentRole(): ?Array
+    public function getParentRoleRecursive(): ?Array
     {
         $return = [];
         $parent = $this->parentRole;
@@ -133,15 +145,8 @@ class UserRole
         return $return;
     }
 
-    public function setParentRole(?self $parentRole): self
-    {
-        $this->parentRole = $parentRole;
-
-        return $this;
-    }
-
     public function getRoleAndParents(): ?Array{
-        return array_unique(array_merge([$this->role], $this->getParentRole()));
+        return array_filter(array_unique(array_merge([$this->role], $this->getParentRoleRecursive())));
     }
 
 }

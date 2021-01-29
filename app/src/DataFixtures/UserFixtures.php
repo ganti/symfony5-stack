@@ -25,12 +25,14 @@ class UserFixtures extends Fixture
     {
         
         //Create the following Userroles
-        $roles = ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'];
-        foreach ($roles as $r) {
+        $roles = [  'Super Admin' => 'ROLE_SUPER_ADMIN', 
+                    'Admin' => 'ROLE_ADMIN',
+                    'User' => 'ROLE_USER'];
+        foreach ($roles as $k => $v) {
             $role = new Userrole();
-            $role->setRole($r);
-            $role->setName($r);
-            $role->setDescription('System Role');
+            $role->setRole($v);
+            $role->setName($k);
+            $role->setDescription($k.' (System Role)');
             $role->setSystemrole(True);
             $manager->persist($role);
         }
@@ -40,7 +42,6 @@ class UserFixtures extends Fixture
         $role_test->setName('ROLE_TEST');
         $role_test->setDescription('Testrole');
         $role_test->setSystemrole(False);
-        $role_test->setParentRole($role);
         $manager->persist($role_test);
 
         $role_test2 = new Userrole();

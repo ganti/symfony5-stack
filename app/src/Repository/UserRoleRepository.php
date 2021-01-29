@@ -44,9 +44,8 @@ class UserRoleRepository extends ServiceEntityRepository
         foreach($roles as $r){
             $rolesToSave = array_merge($rolesToSave, $this->getRoleAndParents($r));
         }
-        $rolesToSave = array_unique($rolesToSave);
 
-        return array_filter($rolesToSave);
+        return array_filter(array_unique($rolesToSave));
     }
 
     // /**
