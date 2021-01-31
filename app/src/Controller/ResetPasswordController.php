@@ -43,7 +43,7 @@ class ResetPasswordController extends AbstractController
     {
         $form = $this->createForm(ResetPasswordRequestFormType::class);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->processSendingPasswordResetEmail(
                 $form->get('email')->getData(),
@@ -72,7 +72,6 @@ class ResetPasswordController extends AbstractController
 
         return $this->render('@EasyAdmin/reset_password/check_email.html.twig', [
             'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
-            'page_title' => 'ACME reset password',
         ]);
     }
 
@@ -83,6 +82,7 @@ class ResetPasswordController extends AbstractController
      */
     public function reset(Request $request, UserPasswordEncoderInterface $passwordEncoder, string $token = null): Response
     {
+
         if ($token) {
             // We store the token in session and remove it from the URL, to avoid the URL being
             // loaded in a browser and potentially leaking the token to 3rd party JavaScript.
@@ -148,28 +148,22 @@ class ResetPasswordController extends AbstractController
 
         // Do not reveal whether a user account was found or not.
         if (!$user) {
-            $logger->notice('Password reset - user not found (email: '.$user->getEmail().')');
-
+            //$logger->notice('Password reset - user not found (email: '.$user->getEmail().')');
             return $this->redirectToRoute('app_check_email');
         }
-
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {
-            // If you want to tell the user why a reset email was not sent, uncomment
-            // the lines below and change the redirect to 'app_forgot_password_request'.
-            // Caution: This may reveal if a user is registered or not.
-            //
-            // $this->addFlash('reset_password_error', sprintf(
-            //     'There was a problem handling your password reset request - %s',
-            //     $e->getReason()
-            // ));
+             $this->addFlash('reset_password_error', sprintf(
+                 'There was a problem handling your password reset request - %s',
+                 $e->getReason()
+             ));
             $logger->notice('Password reset - token exception (email: '.$user->getEmail().')');
 
             return $this->redirectToRoute('app_check_email');
         }
 
-        $mailSender->sendTwig($user->getEmail(), '@EasyAdmin/emails/reset.html.twig', $translator->trans('email.reset.subject'),
+        $mailSender->sendTwig($user->getEmail(), '@EasyAdmin/reset_password/email/reset.email.html.twig', $translator->trans('email.reset.subject'),
             [
                 'resetToken' => $resetToken,
                 'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),

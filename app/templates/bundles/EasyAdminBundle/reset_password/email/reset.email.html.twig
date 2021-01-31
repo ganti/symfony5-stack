@@ -5,47 +5,26 @@
       {% set email_body_title = 'password_reset.email.body_text' | trans %}
    
       {% block email_body_content %}
-         <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-               <td class="" style="vertical-align:middle;width:600px;" >
-                  <![endif]-->
-                  <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:middle;width:100%;">
-                     <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:middle;" width="100%">
-                        <tr>
-                           <td align="justify" style="font-size:0px;padding:10px 25px;padding-right:25px;padding-left:25px;word-break:break-word;">
-                              <div style="font-family:open Sans Helvetica, Arial, sans-serif;font-size:17px;line-height:1;text-align:justify;color:#646777;">
-                                 {% trans %}password_reset.email.body_text{% endtrans %}
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td align="center" vertical-align="middle" style="font-size:0px;padding:10px 25px;padding-top:20px;padding-bottom:20px;word-break:break-word;">
-                              <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;width:220px;line-height:100%;">
-                                 <tr>
-                                    <td align="center" bgcolor="#414141" role="presentation" style="border:none;border-radius:10px;cursor:auto;height:40px;mso-padding-alt:10px 25px;background:#414141;" valign="middle">
-                                       <a href="{{ url('app_reset_password', {token: resetToken.token}) }}" style="display:inline-block;width:170px;background:#414141;color:#f79862;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:10px;" target="_blank">
-                                          {% trans %}password_reset.email.button_text{% endtrans %}
-                                       </a>
-                                    </td>
-                                 </tr>
-                              </table>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                              <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:16px;text-align:left;color:#646777;">
-                                 {{ 'password_reset.email.deactivated_prefix' | trans }} 
-                                 {{ tokenLifetime|date('g') }}
-                                 {{ 'password_reset.email.deactivated_hours'|trans({'hours': tokenLifetime|date('g')}) }}
-                              </div>
-                           </td>
-                        </tr>
-                     </table>
-                  </div>
-                  <!--[if mso | IE]>
-               </td>
-            </tr>
-         </table>
+         <p>
+            {{ 'password_reset.email.body_text' | trans }}
+         </p>
+
+         {% include 'email/include/spacingTable.html.twig' %}
+
+         <center>
+            {% set btnURL = url('app_reset_password', {token: resetToken.token}) %}
+            {% set btnText = 'password_reset.email.button_text' | trans %}
+            {% include 'email/include/button.html.twig' with {'btnURL': btnURL, 'btnText' : btnText} %}
+         </center>
+
+         {% include 'email/include/spacingTable.html.twig' %}
+
+         <p>
+            {{ 'password_reset.email.deactivated_prefix' | trans }} 
+            {{ tokenLifetime|date('g') }}
+            {{ 'password_reset.email.deactivated_hours'|trans({'hours': tokenLifetime|date('g')}) }}
+         </p>                    
+                              
       {% endblock email_body_content %}
    {% endembed %}
 {% endblock email_body %}
