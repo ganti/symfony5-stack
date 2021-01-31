@@ -14,7 +14,7 @@
     </div>
     {{ form_start(resetForm) }}
     <div class="form-group field-password">
-        <label for="password" class="sr-only form-control-label required">{{ _password_label }}</label>
+        <label for="password" class="sr-only form-control-label required">{{ 'password_reset.reset.password_label'| trans }}</label>
         <div class="form-widget form-widget-with-icon">
             <i class="fa fa-fw fa-lock"></i>
             {{ form_row(resetForm.plainPassword.first) }}

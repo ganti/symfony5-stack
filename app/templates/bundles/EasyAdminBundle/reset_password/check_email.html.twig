@@ -2,14 +2,14 @@
 
 {% block login_form %}
     <p>
-        {{ 'password_reset.password_resetcheck_email.email_sent1'|trans }} 
+        {{ 'password_reset.check_email.mail_sent1' | trans }} 
         {{ tokenLifetime|date('g') }} 
-        {{ 'password_reset.password_resetcheck_email.email_sent2'|trans({'hours': tokenLifetime|date('g')}) }}
+        {{ 'password_reset.check_email.mail_sent2' | trans({'hours': tokenLifetime|date('g')}) }}
     </p>
     <p>
-        {{ 'password_reset.password_resetcheck_email.try_again_text'|trans }} 
+        {{ 'password_reset.check_email.try_again_text'|trans }} 
         <a href="{{ path('app_forgot_password_request') }}">
-            {{ 'password_reset.password_resetcheck_email.try_again_link'|trans }}
+            {{ 'password_reset.check_email.try_again_link' | trans }}
         </a>.
     </p>
 {% endblock %}

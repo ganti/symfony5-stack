@@ -1,7 +1,7 @@
-{% extends '@EasyAdmin/email/base.email.html.twig' %}
+{% extends 'email/base.email.html.twig' %}
 
 {% block email_body %}
-   {% embed '@EasyAdmin/email/include/body.email.html.twig' %}
+   {% embed 'email/include/body.email.html.twig' %}
       {% set email_body_title = 'password_reset.email.body_text' | trans %}
    
       {% block email_body_content %}

@@ -41,7 +41,7 @@ class SendEmailCommand extends Command
         try {
             $this->mailSender->sendTwig(
                 $input->getOption('email'),
-                'emails/'.$input->getOption('template').'.html.twig',
+                'email/'.$input->getOption('template').'.html.twig',
                 $input->getOption('subject') ?? 'Test subject',
                 [
                     'resetToken' => new ResetPasswordToken('test', new \DateTime('tomorrow')),

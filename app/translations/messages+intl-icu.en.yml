@@ -21,7 +21,8 @@ password_reset:
         email_input_placeholder: john@doe.com
         email_input_error: Please enter your email
         submit_button: Reset password
-    checkemail:
+    check_email:
+        mail_sent1: If your email address exists, an email has been sent that contains a link that you can click to reset your password. This link will expire in
         mail_sent2: >-
                     {hours, plural,
                         =1    {hour.}
@@ -31,6 +32,7 @@ password_reset:
         try_again_link: try again
     reset:
         header_text: Set new password
+        password_label: Password
         submit_button: Reset
     email: 
         body_title: Reset password 
