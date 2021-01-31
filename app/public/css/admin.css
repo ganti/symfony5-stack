@@ -4,3 +4,9 @@
 .alert-error {
     color: #721c24;
 }
+
+.field-text-code span{
+    color: #c44c34 !important;
+    font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace !important;
+    font-size: 13px !important;
+}

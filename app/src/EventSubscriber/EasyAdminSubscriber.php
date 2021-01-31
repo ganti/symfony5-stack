@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
-use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -18,10 +18,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class EasyAdminSubscriber implements EventSubscriberInterface
 {
     private EntityManagerInterface $entityManager;
-    private CrudUrlGenerator $crudUrlGenerator;
+    private AdminUrlGenerator $crudUrlGenerator;
     private SessionInterface $session;
 
-    public function __construct(EntityManagerInterface $entityManager, CrudUrlGenerator $crudUrlGenerator, SessionInterface $session)
+    public function __construct(EntityManagerInterface $entityManager, AdminUrlGenerator $crudUrlGenerator, SessionInterface $session)
     {
         $this->entityManager = $entityManager;
         $this->crudUrlGenerator = $crudUrlGenerator;
