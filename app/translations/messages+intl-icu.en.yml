@@ -45,3 +45,17 @@ password_reset:
                         =1    {hour.}
                         other {hours.}
                     }
+registration:
+    page_title: Registration
+    header_text: Please fill out the following fields to register
+    username_label: Username
+    username_input_placeholder: Your username
+    email_label: Email
+    email_input_placeholder: john@doe.com
+    password_label: Password
+    password_input_placeholder: Secr3t Password
+    submit_button: Register
+    terms_label: Agree terms
+    
+    
+

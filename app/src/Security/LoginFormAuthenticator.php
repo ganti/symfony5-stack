@@ -96,6 +96,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         if($activeParams != null){
             $activeParams['deletedAt'] = null;
             $activeParams['isActive'] = True;
+            $activeParams['isVerified'] = True;
 
             $user_active = $this->entityManager->getRepository(User::class)->findOneBy($activeParams);
             

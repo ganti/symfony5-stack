@@ -34,6 +34,7 @@ class UserFixtures extends Fixture
             $user = new User();
             $user->setUsername($i['user']);
             $user->setEmail($i['user'].'@foo.dev');
+            $user->setIsVerified(True);
         
             $password = $this->encoder->encodePassword($user, $i['pass']);
             $user->setPassword($password);
