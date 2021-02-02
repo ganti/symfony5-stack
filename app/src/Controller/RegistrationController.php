@@ -29,7 +29,7 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("", name="app_register")
+     * @Route("/register", name="app_register")
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -56,7 +56,7 @@ class RegistrationController extends AbstractController
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
-                    ->from(new Address('mail@mail.com', 'Acme Mail Bot'))
+                    ->from(new Address($_ENV['MAILER_FROM_MAIL'], $_ENV['MAILER_FROM_NAME']))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('@EasyAdmin/registration/confirmation.email.html.twig')
@@ -97,9 +97,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
-
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_login');
     }
 }

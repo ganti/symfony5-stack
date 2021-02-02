@@ -20,8 +20,7 @@
          {% include 'email/include/spacingTable.html.twig' %}
 
          <p>
-            {{ 'password_reset.email.deactivated_prefix' | trans }} 
-            {{ tokenLifetime|date('g') }}
+            {{ 'password_reset.email.deactivated_prefix' | trans }}
             {{ 'password_reset.email.deactivated_hours'|trans({'hours': tokenLifetime|date('g')}) }}
          </p>                    
                               

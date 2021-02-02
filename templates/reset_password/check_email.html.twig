@@ -1,6 +1,0 @@
-{% extends 'bundles/EasyAdminBundle/page/login.html.twig' %}
-
-{% block login_form %}
-    <p>{{ 'twig.check_email.email_sent1'|trans }} {{ tokenLifetime|date('g') }} {{ 'twig.check_email.email_sent2'|trans }}</p>
-    <p>{{ 'twig.check_email.try_again_text'|trans }} <a href="{{ path('app_forgot_password_request') }}">{{ 'twig.check_email.try_again_link'|trans }}</a>.</p>
-{% endblock %}

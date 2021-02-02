@@ -16,26 +16,32 @@ use Twig\Environment;
 class MailSender
 {
     private string $mailerDsn;
-    private string $mailerFrom;
+    private string $mailerFromMail;
+    private string $subject;
+    private string $send_to;
+    
     private Environment $twig;
     private LoggerInterface $logger;
 
     public function __construct(Environment $twig, LoggerInterface $logger)
     {
         $this->mailerDsn = $_ENV['MAILER_DSN'];
-        $this->mailerFrom = $_ENV['MAILER_FROM'];
+        $this->mailerFromMail = $_ENV['MAILER_FROM_MAIL'];
+        $this->mailerFromName = $_ENV['MAILER_FROM_NAME'];
         $this->twig = $twig;
         $this->logger = $logger;
     }
 
-    public function sendHtml(string $email, string $html, string $subject, ?string $text = null, ?string $fromName = null)
+    public function sendHtml(string $email, string $html, string $subject, ?string $text = null, ?string $from = null)
     {
-        $fromAddress = $fromName ? new Address($this->mailerFrom, $fromName) : new Address($this->mailerFrom);
+        $fromAddress = $from ? new Address($this->mailerFromMail, $this->mailerFromName) : new Address($this->mailerFromMail);
+        $this->send_to = $email;
+        $this->subject = $subject;
 
         $message = (new Email())
             ->from($fromAddress)
-            ->to($email)
-            ->subject($subject)
+            ->to($this->send_to)
+            ->subject($this->subject)
             ->html($html);
         if (!empty($text)) {
             $message->text($text);
@@ -45,11 +51,14 @@ class MailSender
 
     public function sendTwig(string $email, string $template, string $subject, array $context, string $from = null, string $reply = null)
     {
-        $from ??= new Address($_ENV['MAILER_FROM'], $_ENV['MAILER_FROM_NAME']);
+        $fromAddress = $from ? new Address($this->mailerFromMail, $this->mailerFromName) : new Address($this->mailerFromMail);
+        $this->send_to = $email;
+        $this->subject = $subject;
+
         $message = (new TemplatedEmail())
-            ->from($from)
-            ->to($email)
-            ->subject($subject);
+            ->from($fromAddress)
+            ->to($this->send_to)
+            ->subject($this->subject);
 
         if (!empty($reply)) {
             $message->replyTo($reply);

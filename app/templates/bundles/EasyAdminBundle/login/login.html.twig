@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block wrapper_wrapper %}
-    {% set page_title = block('page_title') %}
+    {% set page_title = 'login.page_title' | trans %}
 
     <div class="login-wrapper">
         <header class="main-header mb-4">
@@ -66,10 +66,28 @@
                         {{ 'login.sign_in_label' | trans }}
                     </button>
                 </div>
-                <div class="form-group float-right">
-                    <a href="{{ path('app_forgot_password_request') }}">{{ 'login.reset_link'|trans }}</a>
-                </div>
             </form>
+
+            {% if passwordreset_active %}
+                <div class="form-group field-button">
+                    <form action="{{ path('app_forgot_password_request') }}">
+                        <button type="submit" class="btn btn-lg btn-block">
+                            {{ 'login.reset_link'|trans }}
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+            {% if registration_active %}
+                <div class="form-group field-button">
+                    <form action="{{ path('app_register') }}">
+                        <button type="submit" class="btn btn-lg btn-block">
+                            {{ 'login.register_link'|trans }}
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+            
+            
             {% endblock %}
         </section>
     </div>

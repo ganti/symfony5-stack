@@ -1,11 +1,12 @@
 login:
-    reset_text: Please enter credentials to login
+    page_title: Acme Login
     username_label: Your email
     username_placeholder: john@doe.com
     password_label: Your password
     password_placeholder: ''
     sign_in_label: Log in
     reset_link: Reset password
+    register_link: Register
 
 register:
     subject: Welcome to Sf-Easy
@@ -25,8 +26,8 @@ password_reset:
         mail_sent1: If your email address exists, an email has been sent that contains a link that you can click to reset your password. This link will expire in
         mail_sent2: >-
                     {hours, plural,
-                        =1    {hour.}
-                        other {hours.}
+                        =1    {# hour.}
+                        other {# hours.}
                     }
         try_again_text: If you don't receive an email please check your spam folder or
         try_again_link: try again
@@ -42,8 +43,8 @@ password_reset:
         deactivated_prefix: This link will expire in
         deactivated_hours: >-
                     {hours, plural,
-                        =1    {hour.}
-                        other {hours.}
+                        =1    {# hour.}
+                        other {# hours.}
                     }
 registration:
     page_title: Registration
