@@ -59,7 +59,7 @@ class UserRoleCrudController extends AbstractCrudController
             yield TextField::new('description', 'Description');
             yield ArrayField::new('ParentRoleRecursive', 'Parent Roles');
             yield BooleanField::new('active', 'is active')->setFormTypeOption('disabled','disabled');
-            yield DateTimeField::new('createdAt');
+            yield DateTimeField::new('createdAt');  
 
         } else {
             yield FormField::addPanel('Role')->setIcon('fa fa-user-tag');
@@ -85,7 +85,15 @@ class UserRoleCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        
+
+        // hide delete action if a UserRole is a Systemrole
+        $delete_action = parent::configureActions($actions)->getAsDto(Crud::PAGE_INDEX)->getAction(Crud::PAGE_INDEX, Action::DELETE);
+        if (!is_null($delete_action)) {
+            $delete_action->setDisplayCallable(function (UserRole $userrole) {
+                return $userrole->getSystemrole() === False;
+            });   
+        }
+
         return $actions
         ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
         ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
