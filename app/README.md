@@ -38,7 +38,7 @@ bash reset_dev_db.sh
 
 Start local server with:
 ```
-symfony serve
+symfony serve --no-tls
 ```
 Open your browser:
 
