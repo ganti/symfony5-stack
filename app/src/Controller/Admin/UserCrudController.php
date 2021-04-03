@@ -64,7 +64,8 @@ class UserCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('User ')
             ->setEntityLabelInPlural('Users')
             ->setPageTitle('index', '%entity_label_plural%')
-            ->setPageTitle('edit', 'Edit user: %entity_label_singular%')
+            //->setPageTitle('edit', 'Edit %entity_label_singular%: %email    %')
+            ->setPageTitle('edit', fn (User $user) => sprintf('Edit %s', $user->getUsername()))
             ->setSearchFields(['username', 'email'])
         ;
     }
@@ -116,7 +117,14 @@ class UserCrudController extends AbstractCrudController
             }
             
             yield FormField::addPanel('Logs')->setIcon('fas fa-log');
-            yield ArrayField::new('logs');
+            /*
+            yield CollectionField::new('logs')->setFormTypeOptions([
+                'allow_add' => false,
+                'allow_delete' => false
+            ]);
+            */
+            yield AssociationField::new('logs');
+            //yield CollectionField::new('logs')->setTemplatePath('bundles/EasyAdminBundle/fields/array_readonly.html.twig');
 
             if ($this->isGranted('ROLE_ADMIN')) {
                 yield FormField::addPanel('Admin Settings')->setIcon('fas fa-users-cog');
